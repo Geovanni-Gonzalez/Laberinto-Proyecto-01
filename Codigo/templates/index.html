@@ -7,30 +7,19 @@
     <title>Laberinto</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <style>
-        /* Estilo de slider */
         .slider-container {
             margin-top: 50px;
             text-align: center;
         }
 
         .form-range {
-            width:80%;
+            width: 80%;
         }
 
-        /* Estilo de botones */
         .btn {
-            margin-top: 10px; /* Espaciado entre botones */
+            margin-top: 10px;
         }
 
-        /* Estilo de columnas */
-        .col {
-            margin-top: 50px;
-        }
-
-        .text-center{
-            margin-top: 50px;
-        }
-        
         canvas {
             margin-top: 20px;
             border: 2px solid black;
@@ -53,43 +42,38 @@
             <div class="container text-center">
                 <div class="row">
                     <div class="col d-flex flex-column align-items-center">
-                        <!-- Botones alineados verticalmente -->
-                        <button type="button" class="btn btn-primary">Generar Laberinto</button>
+                        <button type="button" class="btn btn-primary" id="generar-laberinto">Generar Laberinto</button>
                         <div class="container slider-container">
-                            <input type="range" class="form-range" min="10" max="100" value="50" id="slider">
+                            <input type="range" class="form-range" min="10" max="50" value="10" id="slider"  step="10">
                             <label for="slider">Tamaño del laberinto: <span id="slider-value">50</span></label>
                         </div>
 
                         <select class="form-select" aria-label="Default select example">
                             <option value="1">Fuerza bruta</option>
-                            <option value="2">Optimization</option>
+                            <option value="2">Optimización</option>
                         </select>
 
                         <button type="button" class="btn btn-primary">Resolver Laberinto</button>
-                        <button type="button" class="btn btn-primary">Guardar Laberinto</button>
                         <button type="button" class="btn btn-primary">Cargar Laberinto</button>
+                        <button type="button" class="btn btn-primary">Guardar Laberinto</button>
+                        
                     </div>
 
                     <div class="col">
-                        <!-- Aquí puedes agregar otro contenido o canvas para renderizar el laberinto -->
-
                         <canvas id="laberinto" width="580" height="500"></canvas>
-                        
-
-
-                        
-
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Script para actualizar el valor del slider en tiempo real -->
+    <!-- Script para actualizar el valor del slider en tiempo real y generar el laberinto -->
     <script>
         const slider = document.getElementById('slider');
         const output = document.getElementById('slider-value');
-
+        const canvas = document.getElementById('laberinto');
+        const ctx = canvas.getContext('2d');
+        
         // Mostrar el valor inicial del slider
         output.innerHTML = slider.value;
 
@@ -97,6 +81,26 @@
         slider.oninput = function() {
             output.innerHTML = this.value;
         }
+
+        // Función para generar el laberinto (grid) en el canvas
+        function generarLaberinto(size) {
+            const cellSize = canvas.width / size;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'black';
+            
+            // Dibujar la cuadrícula
+            for (let row = 0; row < size; row++) {
+                for (let col = 0; col < size; col++) {
+                    ctx.strokeRect(col * cellSize, row * cellSize, cellSize, cellSize);
+                }
+            }
+        }
+
+        // Al hacer clic en el botón "Generar Laberinto"
+        document.getElementById('generar-laberinto').addEventListener('click', function() {
+            const size = slider.value; // Obtener el tamaño seleccionado en el slider
+            generarLaberinto(size);
+        });
     </script>
 
 </body>
