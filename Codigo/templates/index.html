@@ -21,14 +21,18 @@
         }
 
         canvas {
-            margin-top: 20px;
             border: 2px solid black;
+            display: block;
+            margin: 0 auto;
+        }
+        .controls {
+            text-align: center;
         }
     </style>
+
 </head>
 
 <body>
-    
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -60,7 +64,7 @@
                     </div>
 
                     <div class="col">
-                        <canvas id="laberinto" width="580" height="500"></canvas>
+                        <canvas id="laberintoCanvas" width="580" height="500"></canvas>
                     </div>
                 </div>
             </div>
@@ -71,9 +75,9 @@
     <script>
         const slider = document.getElementById('slider');
         const output = document.getElementById('slider-value');
-        const canvas = document.getElementById('laberinto');
+        const canvas = document.getElementById('laberintoCanvas');
         const ctx = canvas.getContext('2d');
-        
+
         // Mostrar el valor inicial del slider
         output.innerHTML = slider.value;
 
@@ -82,25 +86,44 @@
             output.innerHTML = this.value;
         }
 
-        // Función para generar el laberinto (grid) en el canvas
-        function generarLaberinto(size) {
+        // Función para dibujar el laberinto en el canvas
+        function dibujarLaberinto(laberinto) {
+            const size = laberinto.length;
             const cellSize = canvas.width / size;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = 'black';
             
-            // Dibujar la cuadrícula
             for (let row = 0; row < size; row++) {
                 for (let col = 0; col < size; col++) {
+                    // Dibujar muros y caminos
+                    if (laberinto[row][col] === 1) {
+                        ctx.fillStyle = 'black';
+                    } else {
+                        ctx.fillStyle = 'white';
+                    }
+                    ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
                     ctx.strokeRect(col * cellSize, row * cellSize, cellSize, cellSize);
                 }
             }
         }
 
+        // Función para generar el laberinto desde el backend
+        async function generarLaberinto() {
+            const size = slider.value;
+
+            const response = await fetch('/generar-laberinto', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ tamanno: size })
+            });
+
+            const laberinto = await response.json();
+            dibujarLaberinto(laberinto);
+        }
+
         // Al hacer clic en el botón "Generar Laberinto"
-        document.getElementById('generar-laberinto').addEventListener('click', function() {
-            const size = slider.value; // Obtener el tamaño seleccionado en el slider
-            generarLaberinto(size);
-        });
+        document.getElementById('generar-laberinto').addEventListener('click', generarLaberinto);
     </script>
 
 </body>

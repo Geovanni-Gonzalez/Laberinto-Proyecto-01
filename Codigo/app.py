@@ -1,4 +1,6 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, jsonify, request
+import json
+import random
 
 app = Flask(__name__)
 
