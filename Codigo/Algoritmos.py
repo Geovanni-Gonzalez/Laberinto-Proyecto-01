@@ -5,6 +5,7 @@ import math
 
 lista_algortimos = ["dfs_backtracking", "fuerza_bruta", "optimizacion"]
 
+#Algoritmo para la generacion de laberintos
 def dfs_backtracking(laberinto, coordenada_inicio):
     k_inicio, l_inicio = coordenada_inicio  # Coordenadas de inicio, donde empezara el laberinto
     camino = [(k_inicio, l_inicio)]  # Camino de la solucion

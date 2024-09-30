@@ -24,7 +24,7 @@ class Laberinto(object):
 
     """
 
-    def __init__(self, numero_filas, numero_columnas, id=0, algoritmo=""):
+    def __init__(self, numero_filas, numero_columnas, id=0, algoritmo="dfs_backtracking"):
         self.num_filas = numero_filas
         self.num_columnas = numero_columnas
         self.id = id
@@ -164,7 +164,6 @@ class Laberinto(object):
         if metodo == "dfs_backtracking":
             dfs_backtracking(self, coordenadas_inicio)
 
-# Prueba
 
-laberinto = Laberinto(4,4, 0, "dfs_backtracking")
+
 
