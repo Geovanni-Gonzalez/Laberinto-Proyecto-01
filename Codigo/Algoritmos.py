@@ -7,6 +7,7 @@ lista_algortimos = ["dfs_backtracking", "fuerza_bruta", "optimizacion"]
 
 #Algoritmo para la generacion de laberintos
 def dfs_backtracking(laberinto, coordenada_inicio):
+    
     k_inicio, l_inicio = coordenada_inicio  # Coordenadas de inicio, donde empezara el laberinto
     camino = [(k_inicio, l_inicio)]  # Camino de la solucion
     laberinto.grid[k_inicio][l_inicio].visitada = True  # Marca la celda como visitada
@@ -44,7 +45,8 @@ def dfs_backtracking(laberinto, coordenada_inicio):
     laberinto.grid[laberinto.coord_entrada[0]][laberinto.coord_entrada[1]].establecer_entrada_salida("entrada",laberinto.num_filas-1, laberinto.num_columnas-1)  # Establece la celda de entrada
     laberinto.grid[laberinto.coord_salida[0]][laberinto.coord_salida[1]].establecer_entrada_salida("salida",laberinto.num_filas-1, laberinto.num_columnas-1)  # Establece la celda de salida
 
-    for i in range(laberinto.num_filas):    # Reinicia las celdas visitadas
+    
+    for i in range(laberinto.num_filas):    # Reinicia las celdas visitadas 
         for j in range(laberinto.num_columnas):     # Reinicia las celdas visitadas
             laberinto.grid[i][j].visitada = False   # Reinicia las celdas visitadas
 

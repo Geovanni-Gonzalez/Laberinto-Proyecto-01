@@ -21,7 +21,7 @@
         }
 
         canvas {
-            border: 2px solid black;
+
             display: block;
             margin: 0 auto;
         }
@@ -48,7 +48,7 @@
                     <div class="col d-flex flex-column align-items-center">
                         <button onclick="generarLaberinto()" type="button" class="btn btn-primary" id="generar-laberinto">Generar Laberinto</button>
                         <div class="container slider-container">
-                            <input type="range" class="form-range" min="10" max="50" value="10" id="slider"  step="10">
+                            <input type="range" class="form-range" min="10" max="50" value="10" id="slider" step="10">
                             <label for="slider">Tamaño del laberinto: <span id="slider-value">10</span></label>
                         </div>
 
@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="col">
-                        <canvas id="laberintoCanvas" width="580" height="500"></canvas>
+                        <canvas id="laberintoCanvas" width="650" height="600"></canvas>
                     </div>
                 </div>
             </div>
@@ -86,44 +86,60 @@
             output.innerHTML = this.value;
         }
 
-        // Función para generar el laberinto
-        function generarLaberinto() {
-            const tamaño = slider.value;
-            fetch(`/generar_laberinto?tamaño=${tamaño}`)
-                .then(response => response.json())
-                .then(data => {
-                    dibujarLaberinto(data);
-                });
-        }
+// Función para generar el laberinto
+function generarLaberinto() {
+    const tamaño = slider.value;
 
-        // Función para dibujar el laberinto en el canvas
-        function dibujarLaberinto(data) {
-            const tamañoCelda = canvas.width / data.length;  // Ajustar el tamaño de la celda según el tamaño del canvas y el laberinto
+    // Hacer la petición al backend
+    fetch(`/generar_laberinto?tamaño=${tamaño}`)
+        .then(response => response.json())
+        .then(data => {
+            dibujarLaberinto(data, tamaño);
+        });
+}
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+// Función para dibujar el laberinto en el canvas
+function dibujarLaberinto(data, tamaño) {
+    //Color de las paredes
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    // Factor de escala para aumentar el tamaño de las celdas (ajústalo como desees)
+    const factorEscala = 1.9; // Aumenta el tamaño de las celdas en un 50%
+    
+    // Calcular el tamaño de cada celda y escalarlo
+    const tamañoCelda = (Math.min(canvas.width, canvas.height) / tamaño) * factorEscala;  
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);  // Limpiar el canvas antes de redibujar
 
-            for (let i = 0; i < data.length; i++) {
-                for (let j = 0; j < data[i].length; j++) {
-                    if (data[i][j].paredes.top) {
-                        ctx.moveTo(j * tamañoCelda, i * tamañoCelda);
-                        ctx.lineTo((j + 1) * tamañoCelda, i * tamañoCelda);
-                    }
-                    if (data[i][j].paredes.right) {
-                        ctx.moveTo((j + 1) * tamañoCelda, i * tamañoCelda);
-                        ctx.lineTo((j + 1) * tamañoCelda, (i + 1) * tamañoCelda);
-                    }
-                    if (data[i][j].paredes.bottom) {
-                        ctx.moveTo((j + 1) * tamañoCelda, (i + 1) * tamañoCelda);
-                        ctx.lineTo(j * tamañoCelda, (i + 1) * tamañoCelda);
-                    }
-                    if (data[i][j].paredes.left) {
-                        ctx.moveTo(j * tamañoCelda, (i + 1) * tamañoCelda);
-                        ctx.lineTo(j * tamañoCelda, i * tamañoCelda);
-                    }
-                }
+    // Dibujar el laberinto
+    for (let i = 0; i < data.num_filas; i++) {
+        for (let j = 0; j < data.grid[i].length; j++) {
+            const celda = data.grid[i][j];
+            const x = j * tamañoCelda;
+            const y = i * tamañoCelda;
+
+            ctx.beginPath();
+            // Dibujar paredes si existen
+            if (celda.paredes.top) {
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + tamañoCelda, y);
+            }
+            if (celda.paredes.right) {
+                ctx.moveTo(x + tamañoCelda, y);
+                ctx.lineTo(x + tamañoCelda, y + tamañoCelda);
+            }
+            if (celda.paredes.bottom) {
+                ctx.moveTo(x + tamañoCelda, y + tamañoCelda);
+                ctx.lineTo(x, y + tamañoCelda);
+            }
+            if (celda.paredes.left) {
+                ctx.moveTo(x, y + tamañoCelda);
+                ctx.lineTo(x, y);
             }
             ctx.stroke();
         }
+    }
+}
 
         // Al hacer clic en el botón "Generar Laberinto"
         document.getElementById('generar-laberinto').addEventListener('click', generarLaberinto);

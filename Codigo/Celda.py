@@ -90,3 +90,14 @@ class Celda(object):
         self.es_entrada_salida = entrada_salida
 
 
+
+    def to_dict(self):
+        return {
+            "fila": self.fila,
+            "columna": self.columna,
+            "visitada": self.visitada,
+            "activa": self.activa,
+            "es_entrada_salida": self.es_entrada_salida,
+            "paredes": self.paredes,
+            "vecinos": [vecino.to_dict() for vecino in self.vecinos]  # Serializa los vecinos
+        }

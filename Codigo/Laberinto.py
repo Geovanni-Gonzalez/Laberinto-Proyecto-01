@@ -33,10 +33,10 @@ class Laberinto(object):
         self.coord_entrada = self.seleccionar_entrada_salida_random(None)
         self.coord_salida = self.seleccionar_entrada_salida_random(self.coord_entrada)
         self.camino_generacion = []
-        self.camino_solucion = []
+        self.camino_solucion = None
         self.grid_inicial = self.generaar_grid()
         self.grid = self.grid_inicial
-        self.generar_laberinto(algoritmo,(0,0))
+        self.generar_laberinto(algoritmo, self.coord_entrada)
         self.algoritmo = algoritmo
 
 
@@ -150,10 +150,10 @@ class Laberinto(object):
                 rng_entrada_salida = (0, random.randint(0, self.num_columnas - 1)) # Arriba
 
             elif rng_lado == 2:
-                rng_entrada_salida = (self.num_filas - 1, random.randint(0, self.num_columnas - 1)) # Abajo
+                rng_entrada_salida = (self.num_filas - 1, random.randint(0, self.num_columnas - 1)) # Derecha
             
             elif rng_lado == 1:
-                rng_entrada_salida = (random.randint(0, self.num_filas - 1), self.num_columnas - 1) # Derecha
+                rng_entrada_salida = (random.randint(0, self.num_filas - 1), self.num_columnas - 1) # Abajo
 
             elif rng_lado == 3:
                 rng_entrada_salida = (random.randint(0, self.num_filas - 1), 0) # Izquierda
@@ -163,6 +163,20 @@ class Laberinto(object):
     def generar_laberinto(self, metodo, coordenadas_inicio=(0,0)):
         if metodo == "dfs_backtracking":
             dfs_backtracking(self, coordenadas_inicio)
+
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "num_filas": self.num_filas,
+            "num_columnas": self.num_columnas,
+            "tamanno_grid": self.tamanno_grid,
+            "entrada": self.coord_entrada,
+            "salida": self.coord_salida,
+            "camino_generacion": self.camino_generacion,
+            "camino_solucion": self.camino_solucion,
+            "grid": [[celda.to_dict() for celda in fila] for fila in self.grid]
+        }
 
 
 
