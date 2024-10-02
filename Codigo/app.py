@@ -48,26 +48,7 @@ def resolver_laberinto():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/guardar_solucion', methods=['POST'])
-def guardar_solucion():
-    solution_data = request.json  # Assume the solution data is sent as JSON
-    file_name = 'solucion_laberinto.json'  # Change as needed
 
-    with open(file_name, 'w') as f:
-        json.dump(solution_data, f)
-    
-    return jsonify({"message": "Solución guardada exitosamente."})
-
-@app.route('/cargar_solucion', methods=['GET'])
-def cargar_solucion():
-    file_name = 'solucion_laberinto.json'  # Change as needed
-    
-    try:
-        with open(file_name, 'r') as f:
-            solution_data = json.load(f)
-        return jsonify(solution_data)
-    except FileNotFoundError:
-        return jsonify({"error": "No se encontró la solución guardada."}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
