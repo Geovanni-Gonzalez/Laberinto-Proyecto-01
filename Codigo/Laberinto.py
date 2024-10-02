@@ -3,6 +3,7 @@ import math
 import time
 from Celda import *
 from Algoritmos import *
+import json
 
 class Laberinto(object):
     """
@@ -201,3 +202,5 @@ class Laberinto(object):
             "grid": [[celda.to_dict() for celda in fila] for fila in self.grid],
             "punto_inicio": self.punto_inicio
         }
+    
+

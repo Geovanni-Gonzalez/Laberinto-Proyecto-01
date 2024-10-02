@@ -131,33 +131,6 @@ class Administrador:
 
 
 
-    def mostrar_laberinto(self, id, tamano_celda=1):
-        """Muestra el laberinto sin solución."""
-        vis = Visualizador(self.obtener_laberinto(id), tamano_celda, self.nombre_archivo)
-        vis.mostrar_laberinto()
-
-    def mostrar_animacion_generacion(self, id, tamano_celda=1):
-        """Muestra la animación de la generación del laberinto."""
-        vis = Visualizador(self.obtener_laberinto(id), tamano_celda, self.nombre_archivo)
-        vis.mostrar_animacion_generacion()
-
-    def mostrar_solucion(self, id, tamano_celda=1):
-        """Muestra el laberinto con la solución."""
-        vis = Visualizador(self.obtener_laberinto(id), tamano_celda, self.nombre_archivo)
-        vis.mostrar_solucion_laberinto()
-
-    def mostrar_animacion_solucion(self, id, tamano_celda=1):
-        """Muestra la animación de la solución del laberinto."""
-        vis = Visualizador(self.obtener_laberinto(id), tamano_celda, self.nombre_archivo)
-        vis.animar_solucion_laberinto()
-
-    def verificar_id_existente(self, id):
-        """Verifica si el id ya pertenece a un laberinto existente."""
-        return next((laberinto for laberinto in self.laberintos if laberinto.id == id), None)
-
-    def establecer_nombre_archivo(self, nombre_archivo):
-        """Establece el nombre del archivo para guardar animaciones o imágenes."""
-        self.nombre_archivo = nombre_archivo
 
     def habilitar_modo_silencioso(self, habilitado):
         """Habilita o deshabilita el modo silencioso."""
