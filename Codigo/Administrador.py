@@ -20,7 +20,7 @@ class Administrador:
         self.nombre_archivo = ""
         self.modo_silencioso = False
 
-    def agregar_laberinto(self, filas, columnas, id=0):
+    def agregar_laberinto(self, filas, columnas):
         """
         Agrega un laberinto al administrador. El laberinto recibe un índice basado en el
         total de laberintos en el administrador. El id será único mientras no se eliminen
@@ -34,15 +34,14 @@ class Administrador:
         Returns:
             Laberinto: El laberinto recién creado.
         """
-        if id != 0:
-            self.laberintos.append(Laberinto(filas, columnas, id))
-        else:
-            if len(self.laberintos) < 1:
-                self.laberintos.append(Laberinto(filas, columnas, 0))
-            else:
-                self.laberintos.append(Laberinto(filas, columnas, len(self.laberintos) + 1))
+        """Agrega un laberinto al administrador."""
+        id_laberinto = len(self.laberintos)  # ID basado en la cantidad de laberintos
+        laberinto = Laberinto(filas, columnas, id_laberinto)  # Crea el laberinto
+        self.laberintos.append(laberinto)  # Agrega el laberinto a la lista
+        return laberinto
+    
+        
 
-        return self.laberintos[-1]
 
     def agregar_laberinto_existente(self, laberinto, sobrescribir=True):
         """
@@ -85,34 +84,53 @@ class Administrador:
         print("Laberinto no encontrado.")
         return None
 
-    def obtener_laberintos(self):
-        """Obtiene todos los laberintos que el administrador maneja."""
-        return self.laberintos
+    def obtener_laberinto(self, id):
+        """Obtiene un laberinto por su id.
+
+        Args:
+            id (int o str): El id del laberinto.
+
+        Returns:
+            Laberinto: El laberinto si fue encontrado.
+            None: Si no se encontró ningún laberinto con ese id.
+        """
+        for laberinto in self.laberintos:
+            if str(laberinto.id) == str(id):  # Asegúrate de comparar como cadenas
+                return laberinto
+        print("Laberinto no encontrado.")
+        return None
 
     def contar_laberintos(self):
         """Obtiene la cantidad de laberintos en el administrador."""
         return len(self.laberintos)
 
-    def resolver_laberinto(self, id_laberinto, metodo, metodo_vecino="complejo"):
+    def resolver_laberinto(self, id_laberinto, metodo,punto_inicio, metodo_vecino):
         """
         Resuelve un laberinto por un método específico.
 
         Args:
-            id_laberinto (int): El id del laberinto a resolver.
-            metodo (str): El nombre del método de solución (ej: 'dfs_backtracking', 'bi_directional', 'bfs').
+            id_laberinto (str): El id del laberinto a resolver.
+            metodo (str): El nombre del método de solución (ej: 'fuerza_bruta', 'optimizacion').
             metodo_vecino (str): Método para encontrar vecinos (opcional).
         """
-        laberinto = self.obtener_laberinto(id_laberinto)
+        laberinto = self.obtener_laberinto(id_laberinto)  # Cambia aquí para que tome `id_laberinto` como cadena
+        laberinto.establecer_punto_inicio(punto_inicio)
+
         if laberinto is None:
             print("Laberinto no encontrado. Saliendo del solucionador.")
             return None
 
-        if metodo == "fuerza_bruta":
-            #solver = DFSBacktrackingSolver(laberinto, metodo_vecino, self.modo_silencioso)
-            #laberinto.camino_solucion = solver.resolver()
-            pass
-        elif metodo == "optimizacion":
-            pass
+        if metodo == '1':
+            solucionador_fb = FuerzaBruta(laberinto, self.modo_silencioso, metodo_vecino)
+            laberinto.camino_solucion = solucionador_fb.resolver()
+            return laberinto
+
+        elif metodo == '2':
+            solucionador_op = OptimizacionBacktracking(laberinto, self.modo_silencioso, metodo_vecino)
+            laberinto.camino_solucion = solucionador_op.resolver()
+            return laberinto
+
+
 
     def mostrar_laberinto(self, id, tamano_celda=1):
         """Muestra el laberinto sin solución."""

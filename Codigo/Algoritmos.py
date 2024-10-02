@@ -3,7 +3,7 @@ import random
 import math
 
 
-lista_algortimos = ["dfs_backtracking", "fuerza_bruta", "optimizacion"]
+lista_algortimos = ["dfs_backtracking"]  # Lista de algoritmos de generacion de laberintos
 
 #Algoritmo para la generacion de laberintos
 def dfs_backtracking(laberinto, coordenada_inicio):
@@ -54,7 +54,7 @@ def dfs_backtracking(laberinto, coordenada_inicio):
 
     print ("Camino de generacion: ", camino)  # Imprime el camino de generacion
 
-    
+
 
 
 

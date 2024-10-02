@@ -38,7 +38,13 @@ class Laberinto(object):
         self.grid = self.grid_inicial
         self.generar_laberinto(algoritmo, self.coord_entrada)
         self.algoritmo = algoritmo
+        self.punto_inicio = None
 
+    def establecer_punto_inicio(self, punto_inicio):
+        self.punto_inicio = punto_inicio
+    
+    def obtener_punto_inicio(self):
+        return self.punto_inicio
 
     """
     Funcion que crea una cuadricula 2D de objetos Celda. Esto puede ser pensado como un laberinto sin caminos tallados.
@@ -120,14 +126,31 @@ class Laberinto(object):
     """        
 
     def validar_vecino_solucion(self, vecino_indices, k, l, k_fin, l_fin, metodo):
-        if metodo == "fuerza_bruta":
-            lista_vecinos = [n for n in vecino_indices if not self.grid[n[0]][n[1]].visitada and not self.grid[k][l].hay_pared_atras(self.grid[n[0]][n[1]])] # Lista de vecinos no visitados
-        
+        if metodo == '1':# Fuerza bruta
             pass      
         
-        elif metodo=="optimizacion":
-            pass
-        if len(lista_vecinos) > 0:
+        elif metodo=='2':# Optimizacion backtracking
+            lista_vecinos=[]    # Lista de vecinos no visitados
+            distancia_min_target= 100000    # Distancia minima al target
+
+            # Encuentra el vecino mas cercano al target
+            for k_n, l_n in vecino_indices:
+                # Si el vecino no ha sido visitado y no hay paredes entre la celda actual y la celda vecina
+                if (not self.grid[k_n][l_n].visitada and not self.grid[k][l].hay_pared_atras(self.grid[k_n][l_n])):
+                    distancia_target= math.sqrt((k_n- k_fin)**2 + (l_n-l_fin)**2)
+                    # Si la distancia al target es menor que la distancia minima al target
+                    if distancia_target < distancia_min_target:
+                        # Actualiza la distancia minima al target
+                        distancia_min_target=distancia_target
+                        # Actualiza el vecino mas cercano al target
+                        min_vecino=(k_n, l_n)
+            
+            # Si no hay vecinos no visitados
+            if "min_vecino" in locals():        
+                lista_vecinos.append(min_vecino)
+                
+
+        if len(lista_vecinos) > 0:    
             return lista_vecinos
         else:
             return None
@@ -175,9 +198,6 @@ class Laberinto(object):
             "salida": self.coord_salida,
             "camino_generacion": self.camino_generacion,
             "camino_solucion": self.camino_solucion,
-            "grid": [[celda.to_dict() for celda in fila] for fila in self.grid]
+            "grid": [[celda.to_dict() for celda in fila] for fila in self.grid],
+            "punto_inicio": self.punto_inicio
         }
-
-
-
-
