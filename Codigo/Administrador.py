@@ -1,5 +1,4 @@
 from Laberinto import *
-from Visualizador import *
 from Solucionador import *
 
 

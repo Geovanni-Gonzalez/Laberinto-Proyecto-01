@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 import json
 import random
-from Codigo.Administrador import *
+from Administrador import *
 
 admin = Administrador()
 
