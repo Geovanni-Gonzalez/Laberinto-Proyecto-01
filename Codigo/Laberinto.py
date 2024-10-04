@@ -206,6 +206,6 @@ class Laberinto(object):
     def marcar_camino(self, coordenada):
             """ Método para marcar una celda en el camino como parte de la solución """
             x, y = coordenada
-            self.grid[x][y].visitada = True  # O actualiza la representación visual que uses
+            self.grid[x][y].visitada = True  # O actualiza la representación visual 
     
 
