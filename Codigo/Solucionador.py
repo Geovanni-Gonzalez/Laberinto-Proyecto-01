@@ -58,7 +58,7 @@ class FuerzaBruta(Solucionador):
             
             # Verificar si hemos llegado a la salida
             if actual == salida:
-                self.camino = camino_actual  # Si llegamos a la salida, guardamos el camino
+                self.camino = camino_actual  # Guardamos el camino de generación como camino de solución
                 if not self.modo_silencio:
                     logging.info(f"Solución encontrada: {self.camino}")
                 
@@ -74,13 +74,16 @@ class FuerzaBruta(Solucionador):
             # Marcamos la celda como visitada
             visitados.add(actual)
 
-            # Obtener los vecinos de la celda actual
-            vecinos = self.laberinto.encontrar_vecinos(*actual)
-            vecinos_validos = self.laberinto.validar_vecino_generado(vecinos)
+            # Encontrar vecinos de la celda actual
+            k_actual, l_actual = actual
+            indices_vecinos = self.laberinto.encontrar_vecinos(k_actual, l_actual)
 
-            # Añadir cada vecino no visitado a la pila con su respectivo camino
-            for vecino in vecinos_validos:
-                if vecino not in visitados:
+            # Filtrar los vecinos que no sean paredes y no hayan sido visitados
+            for vecino in indices_vecinos:
+                k_n, l_n = vecino
+                
+                # Verificar si hay una pared en la dirección del vecino
+                if self.laberinto.puede_moverse(actual, vecino) and vecino not in visitados:
                     stack.append((vecino, camino_actual + [vecino]))
 
         if not self.modo_silencio:
@@ -89,6 +92,7 @@ class FuerzaBruta(Solucionador):
 
     def obtener_camino(self):
         return self.camino
+
 
         
 
