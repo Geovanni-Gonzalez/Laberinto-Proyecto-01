@@ -20,6 +20,7 @@ class Celda(object):
         self.es_entrada_salida = None
         self.paredes = {"top": True, "right": True, "bottom": True, "left": True}
         self.vecinos = []
+        self.marcado = False
     
     """
     Funcion que verifica si hay paredes entre la celda y una celda vecina.
