@@ -128,7 +128,7 @@ class Laberinto(object):
 
     def validar_vecino_solucion(self, vecino_indices, k, l, k_fin, l_fin, metodo):
         if metodo == '1':# Fuerza bruta
-            pass      
+            return self.fuerza_bruta(k, l, k_fin, l_fin, set(), [])      
         
         elif metodo=='2':# Optimizacion backtracking
             lista_vecinos=[]    # Lista de vecinos no visitados
