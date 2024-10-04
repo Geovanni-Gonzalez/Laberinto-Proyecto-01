@@ -39,28 +39,33 @@ class Solucionador(object):
 
 
 class FuerzaBruta(Solucionador):
-
     def __init__(self, laberinto, modo_silencio=False, método_vecino="fuerza_bruta"):
         super().__init__(laberinto, modo_silencio, método_vecino)
         self.nombre = "Fuerza Bruta"
         self.camino = []  # Lista para almacenar el camino encontrado
 
     def resolver(self):
-        # Iniciar desde las coordenadas seleccionadas
         entrada = self.laberinto.punto_inicio
         salida = self.laberinto.coord_salida
-        self.camino = []
+        self.camino = []  # Reiniciar el camino
         visitados = set()  # Conjunto de celdas ya visitadas
 
-        # Usamos una pila para almacenar los caminos posibles (simula DFS)
+        # Usamos una pila para almacenar los caminos posibles (simula el algoritmo DFS)
         stack = [(entrada, [entrada])]  # Cada elemento de la pila es (posición actual, camino recorrido hasta ahí)
 
         while stack:
             (actual, camino_actual) = stack.pop()  # Tomamos la celda actual y el camino recorrido hasta ahí
+            
+            # Verificar si hemos llegado a la salida
             if actual == salida:
                 self.camino = camino_actual  # Si llegamos a la salida, guardamos el camino
                 if not self.modo_silencio:
                     logging.info(f"Solución encontrada: {self.camino}")
+                
+                # Marcar el camino en el laberinto
+                for paso in self.camino:
+                    self.laberinto.marcar_camino(paso)
+                
                 return self.camino
 
             if actual in visitados:
@@ -81,10 +86,10 @@ class FuerzaBruta(Solucionador):
         if not self.modo_silencio:
             logging.warning("No se encontró ninguna solución.")
         return None  # Si no se encuentra un camino
-    
+
     def obtener_camino(self):
         return self.camino
-    
+
         
 
 class OptimizacionBacktracking(Solucionador):
