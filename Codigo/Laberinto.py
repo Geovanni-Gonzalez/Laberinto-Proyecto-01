@@ -208,22 +208,22 @@ class Laberinto(object):
             x, y = coordenada
             self.grid[x][y].visitada = True  # O actualiza la representación visual 
     
-def puede_moverse(self, actual, vecino):
-        k_actual, l_actual = actual
-        k_vecino, l_vecino = vecino
-        
-        # Verificar si el vecino está a la derecha
-        if l_vecino == l_actual + 1 and self.grid[k_actual][l_actual].paredes['right']:
-            return False
-        # Verificar si el vecino está a la izquierda
-        if l_vecino == l_actual - 1 and self.grid[k_actual][l_actual].paredes['left']:
-            return False
-        # Verificar si el vecino está arriba
-        if k_vecino == k_actual - 1 and self.grid[k_actual][l_actual].paredes['top']:
-            return False
-        # Verificar si el vecino está abajo
-        if k_vecino == k_actual + 1 and self.grid[k_actual][l_actual].paredes['bottom']:
-            return False
-
-        return True
+    def puede_moverse(self, actual, vecino):
+            k_actual, l_actual = actual
+            k_vecino, l_vecino = vecino
+            
+            # Verificar si el vecino está a la derecha
+            if l_vecino == l_actual + 1 and self.grid[k_actual][l_actual].paredes['right']:
+                return False
+            # Verificar si el vecino está a la izquierda
+            if l_vecino == l_actual - 1 and self.grid[k_actual][l_actual].paredes['left']:
+                return False
+            # Verificar si el vecino está arriba
+            if k_vecino == k_actual - 1 and self.grid[k_actual][l_actual].paredes['top']:
+                return False
+            # Verificar si el vecino está abajo
+            if k_vecino == k_actual + 1 and self.grid[k_actual][l_actual].paredes['bottom']:
+                return False
+    
+            return True
     
