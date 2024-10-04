@@ -202,5 +202,10 @@ class Laberinto(object):
             "grid": [[celda.to_dict() for celda in fila] for fila in self.grid],
             "punto_inicio": self.punto_inicio
         }
+
+    def marcar_camino(self, coordenada):
+            """ Método para marcar una celda en el camino como parte de la solución """
+            x, y = coordenada
+            self.grid[x][y].visitada = True  # O actualiza la representación visual que uses
     
 
