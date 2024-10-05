@@ -58,12 +58,12 @@ class FuerzaBruta(Solucionador):
             
             # Verificar si hemos llegado a la salida
             if actual == salida:
-                self.camino = camino_actual  # Guardamos el camino de generación como camino de solución
+                self.camino = [(paso, False) for paso in camino_actual]  # Guardamos el camino de generación
                 if not self.modo_silencio:
                     logging.info(f"Solución encontrada: {self.camino}")
                 
                 # Marcar el camino en el laberinto
-                for paso in self.camino:
+                for paso, _ in self.camino:
                     self.laberinto.marcar_camino(paso)
                 
                 return self.camino
@@ -79,19 +79,27 @@ class FuerzaBruta(Solucionador):
             indices_vecinos = self.laberinto.encontrar_vecinos(k_actual, l_actual)
 
             # Filtrar los vecinos que no sean paredes y no hayan sido visitados
+            vecinos_no_visitados = False
             for vecino in indices_vecinos:
                 k_n, l_n = vecino
                 
                 # Verificar si hay una pared en la dirección del vecino
                 if self.laberinto.puede_moverse(actual, vecino) and vecino not in visitados:
+                    vecinos_no_visitados = True
                     stack.append((vecino, camino_actual + [vecino]))
+
+            # Añadir el paso al camino, incluyendo retroceso si no hay vecinos no visitados (en duplas)
+            self.camino.append((actual, not vecinos_no_visitados))
 
         if not self.modo_silencio:
             logging.warning("No se encontró ninguna solución.")
         return None  # Si no se encuentra un camino
 
+
     def obtener_camino(self):
         return self.camino
+
+
 
 
         
